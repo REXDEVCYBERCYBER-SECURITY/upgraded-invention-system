@@ -1,47 +1,67 @@
-# upgraded-invention-system
+# 💠 Quantum-Super Cyber Intelligence Hub
 
-# 🌌 Cyber Intelligence Hub
+> **SECURITY CLEARANCE LEVEL 4 REQUIRED**  
+> *Real-time defense orchestration and quantum-integrity monitoring system.*
 
-Welcome to the **Quantum-Super Cyber Intelligence Hub**, a world-class cybersecurity management system and intelligence synthesis platform designed for the next generation of digital defense. This hub leverages the power of Gemini AI to monitor, audit, and manifest the future of quantum technology.
-
-## 🚀 Core Features
-
-### 📡 Discovery Registry
-A high-fidelity CMS for cataloging quantum inventions and cybersecurity assets. Features deterministic AI analysis, real-time filtering by stability thresholds, and spectral diagnostics.
-
-### 🔴 Global Threat Monitor
-Powered by **Gemini Search Grounding**, this module scans the web for the most recent and critical cybersecurity threats, data breaches, and zero-day vulnerabilities reported within the last 48 hours.
-
-### 🛡️ Security Auditor
-An AI-driven technical analysis tool. Input your tech specs or code snippets to receive a structured JSON audit covering risk levels, encryption entropy, and specific mitigation protocols.
-
-### 🧪 Synthesis Lab
-Utilizes **Gemini 3 Pro** to generate high-quality tactical reports and intelligence briefings based on neural prompts.
-
-### 🎨 Manifestation Hub
-Uses the **Gemini 2.5 Flash Image** manifestation engine to physically visualize theoretical quantum machinery and technical schematics from text descriptions.
-
-### 💎 Explorer Core
-An interactive upgrade system where researchers can spend "Essence" (earned via audits) to enhance neural vulnerability scanning depth and synthesis logic processing speed.
-
-## 🛠️ Tech Stack
-
-- **Frontend**: React 19, TypeScript, Tailwind CSS
-- **Routing**: React Router 6
-- **AI Intelligence**: Google Gemini API (@google/genai)
-  - `gemini-3-flash-preview` for rapid analysis and search.
-  - `gemini-3-pro-preview` for deep intelligence synthesis.
-  - `gemini-2.5-flash-image` for molecular visual manifestation.
-- **Styling**: Cyberpunk-inspired glassmorphism, neon HUD elements, and custom "Quantum" holographic components.
-
-## ⚡ Getting Started
-
-1.  **API Key**: Ensure your Gemini API key is configured in the environment (`process.env.API_KEY`).
-2.  **Installation**: The project uses modern ES6 modules via `esm.sh`. No complex build steps required—just serve the `index.html`.
-3.  **Core Sync**: Manifest your first asset in the **Manifestation Hub** to populate the registry.
-
-## 📜 Security Protocol
-This application is for authorized intelligence personnel only. All neural uploads are subject to sub-atomic integrity checks.
+The **Quantum-Super Cyber Intelligence Hub** is a cutting-edge command and control (C2) dashboard designed for the next generation of cybersecurity. It integrates deep-learning threat analysis via Google's Gemini API with a high-fidelity diagnostic suite for quantum-encrypted networks.
 
 ---
-*Built with ❤️ by the Quantum Intelligence Division.*
+
+## 🛰️ System Architecture
+
+The hub is built on a distributed reactive architecture, ensuring sub-millisecond telemetry updates across four primary modules:
+
+### 1. Neural Threat Topology (D3.js Core)
+- **Engine**: Custom force-directed graph algorithm.
+- **Function**: Visualizes the "Neural Mesh" of global network nodes.
+- **Diagnostics**: Identifies intrusion vectors in real-time. Red nodes represent confirmed breaches, while blue/cyan nodes represent secure segments.
+- **Overlay**: Includes a synchronized "Pulse Scan" that refreshes node status across the viewport.
+
+### 2. Quantum Encryption Diagnostics (Q-Diag)
+- **Monitoring**: Tracks Qubit key strength (fixed at 8192-bit for high-security sectors) and Entanglement Decay.
+- **Integrity Alert System**: 
+  - **Critical Threshold**: Integrity < 98.0% or Decay > 0.15%/s.
+  - **Visual Protocol**: Triggers `protocol: RED_ALERT`. The UI enters an "animate-cyber-flash" state with high-intensity rose-red borders and emergency banners.
+- **Vulnerability Scanner**: Continuous heuristic analysis for "Coherence Drift" and "Phase Shift Noise."
+
+### 3. Gemini AI "Core Intelligence"
+- **Model**: `gemini-3-pro-preview`
+- **Role**: Strategic Cyber-Defense Assistant.
+- **Capabilities**: Forensic analysis, threat actor profiling, and automated response strategy formulation.
+- **Tone**: Technical, authoritative, and info-dense.
+
+### 4. System Telemetry Grid
+- **Metrics**: Real-time AreaCharts (via Recharts) monitoring packet analysis and system throughput.
+- **Sector Grid**: 48-node detailed view showing the micro-status of individual sandbox clusters.
+
+---
+
+## 🎨 Visual Design Philosophy
+
+The Hub utilizes a **High-Contrast Cyber-Noir** aesthetic:
+- **Palette**: `Slate-950` (Deep Void) base with `Cyan-400` (Information) and `Indigo-500` (Neural Energy) accents. `Rose-500` is reserved strictly for `CRITICAL` status.
+- **Typography**: `Orbitron` for cinematic headers and `JetBrains Mono` for high-readability technical data.
+- **Post-Processing**: A CSS-based **Scanline Overlay** and **Radial Glows** provide depth and the feeling of a high-end physical CRT/LCD glass console.
+
+---
+
+## 🛠 Operational Setup
+
+### Environment Variables
+The system requires a Gemini API key to initialize the Core Intelligence module.
+```env
+API_KEY=your_google_gemini_api_key
+```
+
+### Key Components
+- `App.tsx`: Global state orchestrator and layout engine.
+- `QuantumEncryptionDiagnostics.tsx`: The primary diagnostic interface for secure channels.
+- `ThreatMap.tsx`: D3-based topology visualization.
+- `CyberTerminal.tsx`: Low-level system event logger.
+
+## 🛡️ Security Disclaimer
+This application is a highly sophisticated simulation. In production environments, the data-feed hooks in `App.tsx` should be connected to live ELK stacks, Prometheus exporters, or QKD (Quantum Key Distribution) hardware interfaces.
+
+---
+
+*“In the quantum realm, the only constant is vigilance.”*
