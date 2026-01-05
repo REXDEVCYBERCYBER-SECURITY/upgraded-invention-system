@@ -8,6 +8,13 @@ export interface ThreatNode {
   timestamp: string;
 }
 
+export interface VulnerabilityDetail {
+  name: string;
+  impact: string;
+  origin: string;
+  timestamp: string;
+}
+
 export interface LogEntry {
   id: string;
   timestamp: string;
@@ -31,6 +38,14 @@ export interface QuantumDiagnostics {
   keyStrength: number; // in Qubits
   entanglementDecay: number; // percentage
   noiseLevel: number; // dB
-  activeVulnerabilities: string[];
+  activeVulnerabilities: (string | VulnerabilityDetail)[];
   integrityScore: number;
+}
+
+export interface ScriptMetadata {
+  id: string;
+  filename: string;
+  language: 'PHP' | 'PYTHON' | 'SQL';
+  content: string;
+  status: 'IDLE' | 'RUNNING' | 'SUCCESS' | 'ERROR';
 }
