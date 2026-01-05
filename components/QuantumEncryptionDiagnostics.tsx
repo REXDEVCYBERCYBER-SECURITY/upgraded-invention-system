@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts';
 import { QuantumDiagnostics, VulnerabilityDetail, ScriptMetadata } from '../types';
-// Import Icons from constants to resolve 'Cannot find name Icons' error
 import { Icons } from '../constants';
 
 const INTEGRITY_THRESHOLD = 98.0;
@@ -11,28 +10,38 @@ const DECAY_THRESHOLD = 0.15;
 const THREAT_DATABASE: Omit<VulnerabilityDetail, 'timestamp'>[] = [
   { 
     name: "Quantum Tunneling Leak", 
-    impact: "Active data egress detected via non-classical tunneling. Potential private key fragment leakage across secondary relays.", 
-    origin: "External Relay 0x7G (Secure Gateway)" 
+    severity: "HIGH",
+    impact: "Non-classical data egress detected. Potential private key fragment leakage across secondary relays. 12% entropy drain observed.", 
+    origin: "Sector 7G: Node-0xFF21 [Secure Gateway]",
+    mitigation: "Protocol_77: FLUSH_TUNNEL_CAVITY"
   },
   { 
     name: "Superposition Collapse", 
-    impact: "Destruction of entangled qubit pairs. Imminent communication blackout on the primary neural mesh link.", 
-    origin: "Internal Cooling Grid (Thermal Anomaly)" 
+    severity: "CRITICAL",
+    impact: "Total destruction of entangled qubit pairs. Primary neural mesh link coherence dropping at 4.2%/s. Imminent blackout.", 
+    origin: "Core Grid: Thermal-Relay-A4 [Cryo Anomaly]",
+    mitigation: "Protocol_01: RESONATE_PHASE_ARRAY"
   },
   { 
     name: "Entanglement Hijack", 
-    impact: "Unauthorized observer node inserted into Bell-state pairs. Man-in-the-middle cryptographic risk level: CRITICAL.", 
-    origin: "Edge Router 0xAF (Spoofed Identity)" 
+    severity: "CRITICAL",
+    impact: "Unauthorized observer detected in Bell-state pairs. Man-in-the-middle cryptographic risk confirmed on sub-channel 4.", 
+    origin: "Edge Router: 0xAF [Spoofed_ID_V4]",
+    mitigation: "Protocol_X: SEVER_PARITY_LINK"
   },
   { 
     name: "Phase Shift Injection", 
-    impact: "Malicious insertion of phase noise into coherent streams. 15% packet drop rate observed on encrypted channels.", 
-    origin: "High-Frequency Ingress (Sub-sector 4A)" 
+    severity: "MEDIUM",
+    impact: "Malicious phase noise insertion. 15% packet drop rate observed. Signal-to-noise ratio compromised.", 
+    origin: "Network Ingress: Sub-sector 4A [Broadband Relay]",
+    mitigation: "Protocol_12: ACTIVE_NOISE_SQUELCH"
   },
   { 
     name: "Bell State Violation", 
-    impact: "Local realism verified on secure link. Quantum security properties negated. Entropy pool compromised.", 
-    origin: "Unknown (Inter-Dimensional Interference)" 
+    severity: "HIGH",
+    impact: "Local realism verified on secure link. Quantum non-locality properties negated. Entropy pool integrity at 12%.", 
+    origin: "Void Relay: unknown-origin-09 [External Interference]",
+    mitigation: "Protocol_09: REGEN_ENTROPY_POOL"
   }
 ];
 
@@ -147,8 +156,8 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
     setLatestThreat(detailedThreat);
     setCurrent(prev => ({
       ...prev,
-      integrityScore: parseFloat((95 + Math.random() * 3).toFixed(2)),
-      entanglementDecay: parseFloat((0.12 + Math.random() * 0.1).toFixed(3)),
+      integrityScore: parseFloat((detailedThreat.severity === 'CRITICAL' ? 92 + Math.random() * 2 : 95 + Math.random() * 2).toFixed(2)),
+      entanglementDecay: parseFloat((detailedThreat.severity === 'CRITICAL' ? 0.2 + Math.random() * 0.1 : 0.12 + Math.random() * 0.05).toFixed(3)),
       activeVulnerabilities: [detailedThreat.name, ...prev.activeVulnerabilities.filter(v => typeof v === 'string')].slice(0, 4)
     }));
   };
@@ -161,10 +170,19 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
     }, 1000);
   };
 
+  const getSeverityStyles = (severity?: string) => {
+    switch(severity) {
+      case 'CRITICAL': return 'bg-rose-500/10 border-rose-500 text-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.3)] animate-pulse';
+      case 'HIGH': return 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-[0_0_10px_rgba(251,191,36,0.2)]';
+      default: return 'bg-cyan-500/10 border-cyan-500 text-cyan-400';
+    }
+  };
+
   return (
     <div className={`transition-all duration-500 rounded-xl flex flex-col h-full backdrop-blur-xl border relative overflow-hidden group/main ${
       isRotating ? 'border-cyan-400 bg-cyan-950/20 shadow-[0_0_30px_rgba(34,211,238,0.2)]' : 
-      current.integrityScore < 98.0 ? 'animate-cyber-flash border-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.2)]' : 'bg-slate-900/40 border-indigo-500/20 shadow-xl'
+      latestThreat?.severity === 'CRITICAL' ? 'border-rose-500 bg-rose-950/10' :
+      current.integrityScore < 98.0 ? 'animate-cyber-flash border-rose-500' : 'bg-slate-900/40 border-indigo-500/20 shadow-xl'
     }`}>
       
       {/* Tabs */}
@@ -211,56 +229,71 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
                {/* Top Stats */}
                <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-950/40 p-4 rounded-xl border border-white/5 group hover:border-cyan-500/30 transition-all">
-                     <div className="text-[9px] text-slate-500 uppercase mb-2 tracking-widest">Key Depth</div>
+                     <div className="text-[9px] text-slate-500 uppercase mb-2 tracking-widest font-bold">Key Depth</div>
                      <div className="text-2xl font-orbitron text-cyan-50 leading-none">
                        {current.keyStrength}<span className="text-[10px] opacity-40 ml-1">Qubits</span>
                      </div>
                   </div>
                   <div className="bg-slate-950/40 p-4 rounded-xl border border-white/5 group hover:border-indigo-500/30 transition-all">
-                     <div className="text-[9px] text-slate-500 uppercase mb-2 tracking-widest">Integrity</div>
+                     <div className="text-[9px] text-slate-500 uppercase mb-2 tracking-widest font-bold">Integrity</div>
                      <div className={`text-2xl font-orbitron leading-none ${current.integrityScore < 98 ? 'text-rose-400' : 'text-emerald-400'}`}>
                        {current.integrityScore.toFixed(2)}<span className="text-[10px] opacity-40 ml-1">%</span>
                      </div>
                   </div>
                </div>
 
-               {/* Detailed Vulnerability Display */}
-               <div className={`border p-3 rounded-xl min-h-[85px] transition-all duration-500 overflow-hidden ${
-                 latestThreat ? 'bg-rose-950/20 border-rose-500/40' : 'bg-black/20 border-white/5'
-               }`}>
-                  <div className="text-[8px] text-slate-500 uppercase mb-2 flex justify-between items-center tracking-widest font-bold">
-                    <span>Threat Intelligence</span>
-                    {latestThreat && <span className="text-rose-500 animate-pulse">! ACTIVE ALERT</span>}
+               {/* FORENSIC THREAT HUD */}
+               <div className={`border p-4 rounded-xl min-h-[140px] transition-all duration-500 overflow-hidden relative ${
+                 latestThreat ? 'bg-slate-950/60 border-current shadow-inner' : 'bg-black/20 border-white/5'
+               }`} style={{ color: latestThreat?.severity === 'CRITICAL' ? '#f43f5e' : latestThreat?.severity === 'HIGH' ? '#fbbf24' : '#22d3ee' }}>
+                  
+                  <div className="text-[8px] uppercase mb-3 flex justify-between items-center tracking-[0.2em] font-black opacity-60">
+                    <span className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                      Forensic_Threat_Analysis
+                    </span>
+                    {latestThreat && <span className="animate-pulse">Vector_Detected_0x{Math.floor(Math.random()*999)}</span>}
                   </div>
+
                   {latestThreat ? (
-                    <div className="animate-in slide-in-from-right-2 duration-300 space-y-2">
-                      <div className="flex justify-between items-start">
-                        <div className="text-[10px] font-bold text-rose-400 font-orbitron uppercase tracking-tighter truncate w-3/4">
-                          {latestThreat.name}
+                    <div className="animate-in slide-in-from-right-2 duration-300 space-y-3">
+                      <div className="flex justify-between items-start border-b border-current/20 pb-2">
+                        <div className="flex flex-col">
+                           <div className="text-[11px] font-black font-orbitron uppercase tracking-tighter">
+                             {latestThreat.name}
+                           </div>
+                           <div className="text-[7px] font-mono opacity-50 tracking-widest uppercase mt-0.5">Vector_Origin: {latestThreat.origin}</div>
                         </div>
-                        <div className="text-[7px] text-slate-600 font-mono">{latestThreat.timestamp}</div>
+                        <div className={`px-2 py-0.5 rounded text-[8px] font-black border uppercase ${getSeverityStyles(latestThreat.severity)}`}>
+                          {latestThreat.severity}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-1 gap-1.5">
-                        <div className="flex items-start gap-2 bg-rose-500/5 p-1 rounded border-l border-rose-500/30">
-                          <span className="text-[7px] font-black text-rose-500/60 uppercase w-12 shrink-0">Origin:</span>
-                          <span className="text-[8px] text-slate-300 font-mono leading-tight">{latestThreat.origin}</span>
+
+                      <div className="grid grid-cols-1 gap-2">
+                        <div className="bg-black/40 p-2 rounded border border-white/5">
+                           <div className="text-[7px] font-black uppercase mb-1 opacity-50 tracking-widest">Potential_System_Impact:</div>
+                           <p className="text-[9px] text-slate-300 leading-tight italic font-mono">{latestThreat.impact}</p>
                         </div>
-                        <div className="flex flex-col gap-0.5 px-1">
-                          <span className="text-[7px] font-black text-rose-500/60 uppercase">Impact_Analysis:</span>
-                          <p className="text-[8px] text-slate-400 leading-tight italic">{latestThreat.impact}</p>
+                        
+                        <div className="flex justify-between items-center px-1">
+                           <div className="flex flex-col">
+                              <span className="text-[7px] font-black uppercase opacity-50">Active_Protocol:</span>
+                              <span className="text-[9px] font-mono font-bold tracking-tighter text-current uppercase">{latestThreat.mitigation}</span>
+                           </div>
+                           <div className="text-[7px] font-mono opacity-40 text-right uppercase">
+                             Log_Ref: {latestThreat.timestamp}<br/>
+                             Parity: Passed
+                           </div>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-1 opacity-40">
-                      <div className="text-[9px] font-mono text-slate-600 italic">No active external breaches detected.</div>
-                      <div className="space-y-1">
-                        {current.activeVulnerabilities.slice(0, 2).map((v, i) => (
-                          <div key={i} className="flex items-center gap-2 text-[8px] font-mono text-slate-500">
-                            <span className="w-1 h-1 rounded-full bg-cyan-500/30" />
-                            <span className="truncate">{typeof v === 'string' ? v : v.name}</span>
-                          </div>
-                        ))}
+                    <div className="flex flex-col items-center justify-center h-full gap-2 opacity-30">
+                      <div className="text-[9px] font-mono tracking-widest uppercase">Scanner_Passive: No_External_Breaches</div>
+                      <div className="flex gap-1.5">
+                        <div className="w-1 h-3 bg-cyan-500/20" />
+                        <div className="w-1 h-3 bg-cyan-500/40" />
+                        <div className="w-1 h-3 bg-cyan-500/60" />
                       </div>
                     </div>
                   )}
@@ -269,10 +302,10 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
                {/* Chart View */}
                <div className="flex-1 min-h-0 flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="text-[9px] text-slate-500 uppercase tracking-widest">Quantum Decay Heuristics</div>
-                    <div className="text-[10px] font-mono text-cyan-400/80">{current.entanglementDecay.toFixed(3)}% Decay</div>
+                    <div className="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Waveform Stability Heuristics</div>
+                    <div className="text-[10px] font-mono text-cyan-400/80">{current.entanglementDecay.toFixed(3)}% Drift</div>
                   </div>
-                  <div className="flex-1 bg-black/30 rounded-xl border border-white/5 p-3 overflow-hidden">
+                  <div className="flex-1 bg-black/30 rounded-xl border border-white/5 p-3 overflow-hidden relative">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={diagData}>
                         <defs>
@@ -281,17 +314,18 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
                               <stop offset="95%" stopColor={current.integrityScore < 98 ? "#f43f5e" : "#22d3ee"} stopOpacity={0}/>
                            </linearGradient>
                         </defs>
-                        <YAxis domain={[0, 0.2]} hide />
+                        <YAxis domain={[0, 0.25]} hide />
                         <Area 
-                          type="monotone" 
+                          type="stepAfter" 
                           dataKey="value" 
                           stroke={current.integrityScore < 98 ? "#f43f5e" : "#22d3ee"} 
-                          strokeWidth={2} 
+                          strokeWidth={1.5} 
                           fill="url(#decayGrad)" 
                           isAnimationActive={false} 
                         />
                       </AreaChart>
                     </ResponsiveContainer>
+                    <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_40px,rgba(34,211,238,0.03)_40px,rgba(34,211,238,0.03)_41px)] pointer-events-none" />
                   </div>
                </div>
 
@@ -300,13 +334,13 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
                  <button
                     onClick={initiateKeyRotation}
                     disabled={isRotating}
-                    className={`flex-1 border font-orbitron text-[10px] py-3.5 rounded-xl uppercase tracking-[0.3em] transition-all relative overflow-hidden group/btn ${
+                    className={`flex-1 border font-orbitron text-[10px] py-4 rounded-xl uppercase tracking-[0.3em] transition-all relative overflow-hidden group/btn ${
                       isRotating 
                         ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-400 cursor-wait' 
                         : 'bg-slate-950 border-cyan-500/20 text-cyan-400 hover:border-cyan-400 hover:bg-cyan-500/10 shadow-lg'
                     }`}
                   >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
+                    <span className="relative z-10 flex items-center justify-center gap-2 font-black">
                       <Icons.Shield />
                       {isRotating ? 'Synchronizing...' : 'Rotate Key'}
                     </span>
@@ -316,8 +350,8 @@ export const QuantumEncryptionDiagnostics: React.FC = () => {
                   <button
                     onClick={simulateVulnerability}
                     disabled={isRotating}
-                    className="px-4 border border-rose-500/30 text-rose-500 bg-slate-950/40 font-orbitron text-[9px] rounded-xl uppercase tracking-tighter hover:bg-rose-500/10 hover:border-rose-500 transition-all flex items-center justify-center"
-                    title="Inject Diagnostic Threat"
+                    className="px-6 border border-rose-500/30 text-rose-500 bg-slate-950/40 font-orbitron text-[9px] rounded-xl uppercase tracking-tighter hover:bg-rose-500/10 hover:border-rose-500 transition-all flex items-center justify-center font-black"
+                    title="Simulate Cyber Attack"
                   >
                     Inject Threat
                   </button>
